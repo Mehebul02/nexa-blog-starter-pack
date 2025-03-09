@@ -1,4 +1,7 @@
+'use client'
 import BlogCard from '@/components/ui/BlogCard';
+import Spinner from '@/components/ui/Spinner';
+import { useGetBlogsQuery } from '@/redux/api/blog.Slice';
 import { Blog } from '@/types';
 import { Metadata } from 'next';
 import React from 'react';
@@ -7,12 +10,16 @@ export const metaData:Metadata={
     title:'Next Blog | Blogs'
 }
 
-const BlogsPage = async () => {
-    const res = await fetch('http://localhost:5000/blogs',{
-        cache:'no-cache'
-    })
-    const blogs  = await res.json()
-    console.log(blogs);
+const BlogsPage =  () => {
+    // const res = await fetch('http://localhost:5000/blogs',{
+    //     cache:'no-cache'
+    // })
+    // const blogs  = await res.json()
+    // console.log(blogs);
+    const {data:blogs, isLoading} = useGetBlogsQuery({})
+    if(isLoading){
+      return <Spinner/>
+    }
     return (
         <div className='max-w-7xl mx-auto my-10'>
             <h1 className="text-3xl text-center my-5 font-bold">
